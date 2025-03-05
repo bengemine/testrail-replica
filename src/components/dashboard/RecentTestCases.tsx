@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import TestCaseItem, { TestCaseItemProps } from "@/components/tests/TestCaseItem";
+import { Link } from "react-router-dom";
 
 interface RecentTestCasesProps {
   testCases: TestCaseItemProps[];
@@ -16,7 +17,13 @@ const RecentTestCases = ({ testCases }: RecentTestCasesProps) => {
           <TestCaseItem key={test.id} {...test} />
         ))}
       </div>
-      <Button variant="outline" size="sm" className="mt-4 w-full">
+      <Button
+        variant="outline"
+        size="sm"
+        className="mt-4 w-full"
+        as={Link}
+        to="/test-cases"
+      >
         View All Test Cases
       </Button>
     </DashboardCard>

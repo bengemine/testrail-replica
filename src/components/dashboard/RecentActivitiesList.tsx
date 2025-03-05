@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import RecentActivity from "@/components/dashboard/RecentActivity";
+import { Link } from "react-router-dom";
 
 interface ActivityItem {
   id: string;
@@ -21,7 +22,13 @@ const RecentActivitiesList = ({ activities }: RecentActivitiesListProps) => {
   return (
     <DashboardCard title="Recent Activity">
       <RecentActivity activities={activities} />
-      <Button variant="outline" size="sm" className="mt-4 w-full">
+      <Button
+        variant="outline"
+        size="sm"
+        className="mt-4 w-full"
+        as={Link}
+        to="/history"
+      >
         View All Activity
       </Button>
     </DashboardCard>
