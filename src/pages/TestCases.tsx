@@ -1,18 +1,42 @@
 
-import React from "react";
+import React, { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { v4 as uuidv4 } from "uuid";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import TestCaseList from "@/components/tests/TestCaseList";
+import TestCaseForm from "@/components/tests/TestCaseForm";
+import { TestCaseItemProps } from "@/components/tests/TestCaseItem";
 
 const TestCases = () => {
   const { toast } = useToast();
+  const [testCases, setTestCases] = useState<TestCaseItemProps[]>([]);
+  const [formOpen, setFormOpen] = useState(false);
 
   const handleCreateTestCase = () => {
+    setFormOpen(true);
+  };
+
+  const handleFormSubmit = (data: any) => {
+    const newTestCase: TestCaseItemProps = {
+      id: uuidv4(),
+      title: data.title,
+      status: "untested",
+      priority: data.priority,
+      type: data.type,
+      createdBy: "Current User",
+      lastRun: "Never",
+      tags: [],
+    };
+
+    setTestCases([newTestCase, ...testCases]);
+    setFormOpen(false);
+    
     toast({
-      title: "Create Test Case",
-      description: "This would open a form to create a new test case in a full implementation."
+      title: "Test Case Created",
+      description: `"${data.title}" has been created successfully.`,
     });
   };
 
@@ -35,18 +59,16 @@ const TestCases = () => {
             </p>
           </div>
 
-          <div className="mt-6 rounded-lg border">
-            <div className="p-6 text-center">
-              <h3 className="text-lg font-medium">No Test Cases Yet</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Create your first test case to get started with testing.
-              </p>
-              <Button onClick={handleCreateTestCase} className="mt-4 gap-2">
-                <PlusCircle className="h-4 w-4" />
-                Create Test Case
-              </Button>
-            </div>
-          </div>
+          <TestCaseList 
+            testCases={testCases} 
+            onCreateTestCase={handleCreateTestCase} 
+          />
+
+          <TestCaseForm 
+            open={formOpen} 
+            onOpenChange={setFormOpen} 
+            onSubmit={handleFormSubmit} 
+          />
         </main>
       </div>
     </div>
