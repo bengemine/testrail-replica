@@ -22,15 +22,15 @@ const RecentActivitiesList = ({ activities }: RecentActivitiesListProps) => {
   return (
     <DashboardCard title="Recent Activity">
       <RecentActivity activities={activities} />
-      <Button
-        variant="outline"
-        size="sm"
-        className="mt-4 w-full"
-        as={Link}
-        to="/history"
-      >
-        View All Activity
-      </Button>
+      <Link to="/history" className="w-full block">
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-4 w-full"
+        >
+          View All Activity
+        </Button>
+      </Link>
     </DashboardCard>
   );
 };

@@ -17,15 +17,15 @@ const RecentTestCases = ({ testCases }: RecentTestCasesProps) => {
           <TestCaseItem key={test.id} {...test} />
         ))}
       </div>
-      <Button
-        variant="outline"
-        size="sm"
-        className="mt-4 w-full"
-        as={Link}
-        to="/test-cases"
-      >
-        View All Test Cases
-      </Button>
+      <Link to="/test-cases" className="w-full block">
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-4 w-full"
+        >
+          View All Test Cases
+        </Button>
+      </Link>
     </DashboardCard>
   );
 };

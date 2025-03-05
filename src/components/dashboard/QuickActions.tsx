@@ -22,26 +22,26 @@ const QuickActions = () => {
         <CardTitle className="text-lg font-medium">Quick Actions</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-2">
-        <Button 
-          className="justify-start gap-2" 
-          size="sm"
-          onClick={() => handleAction("New Test Case")}
-          as={Link}
-          to="/test-cases"
-        >
-          <PlusCircle className="h-4 w-4" />
-          New Test Case
-        </Button>
-        <Button 
-          className="justify-start gap-2" 
-          size="sm"
-          onClick={() => handleAction("Start Test Run")}
-          as={Link}
-          to="/test-runs"
-        >
-          <Play className="h-4 w-4" />
-          Start Test Run
-        </Button>
+        <Link to="/test-cases" className="w-full">
+          <Button 
+            className="justify-start gap-2 w-full" 
+            size="sm"
+            onClick={() => handleAction("New Test Case")}
+          >
+            <PlusCircle className="h-4 w-4" />
+            New Test Case
+          </Button>
+        </Link>
+        <Link to="/test-runs" className="w-full">
+          <Button 
+            className="justify-start gap-2 w-full" 
+            size="sm"
+            onClick={() => handleAction("Start Test Run")}
+          >
+            <Play className="h-4 w-4" />
+            Start Test Run
+          </Button>
+        </Link>
         <Button 
           className="justify-start gap-2" 
           size="sm"
