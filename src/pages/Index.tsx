@@ -1,6 +1,5 @@
 
 import React from "react";
-import { TestCaseItemProps } from "@/components/tests/TestCaseItem";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -11,83 +10,7 @@ import RecentActivitiesList from "@/components/dashboard/RecentActivitiesList";
 import RecentTestCases from "@/components/dashboard/RecentTestCases";
 import QuickActions from "@/components/dashboard/QuickActions";
 import TeamActivity from "@/components/dashboard/TeamActivity";
-
-// Mock data
-const recentActivities = [
-  {
-    id: "1",
-    type: "passed" as const,
-    title: "Login Functionality Test",
-    description: "Test case TC-001 was executed successfully",
-    user: "John Smith",
-    timestamp: "10 min ago",
-  },
-  {
-    id: "2",
-    type: "failed" as const,
-    title: "Payment Processing Test",
-    description: "Test case TC-045 failed during execution",
-    user: "Emily Johnson",
-    timestamp: "1 hour ago",
-  },
-  {
-    id: "3",
-    type: "created" as const,
-    title: "User Registration Test Suite",
-    description: "New test suite was created with 15 test cases",
-    user: "Michael Brown",
-    timestamp: "3 hours ago",
-  },
-  {
-    id: "4",
-    type: "updated" as const,
-    title: "API Integration Tests",
-    description: "Test cases updated with new API endpoints",
-    user: "Sarah Davis",
-    timestamp: "Yesterday",
-  },
-  {
-    id: "5",
-    type: "pending" as const,
-    title: "Performance Test Plan",
-    description: "Test plan is awaiting approval",
-    user: "Alex Wilson",
-    timestamp: "2 days ago",
-  },
-];
-
-const recentTests: TestCaseItemProps[] = [
-  {
-    id: "TC-001",
-    title: "User can successfully log in with valid credentials",
-    status: "passed",
-    priority: "high",
-    type: "Functional",
-    createdBy: "John Smith",
-    lastRun: "Today",
-    tags: ["login", "authentication"],
-  },
-  {
-    id: "TC-002",
-    title: "System displays appropriate error for invalid login",
-    status: "failed",
-    priority: "medium",
-    type: "Functional",
-    createdBy: "Emily Johnson",
-    lastRun: "Yesterday",
-    tags: ["login", "error-handling"],
-  },
-  {
-    id: "TC-003",
-    title: "Password reset functionality works as expected",
-    status: "blocked",
-    priority: "critical",
-    type: "Functional",
-    createdBy: "Michael Brown",
-    lastRun: "3 days ago",
-    tags: ["password", "authentication"],
-  },
-];
+import { useTestContext } from "@/context/TestContext";
 
 const upcomingMilestones = [
   { name: "Beta Release", date: "June 15, 2023", progress: 65 },
@@ -96,6 +19,14 @@ const upcomingMilestones = [
 ];
 
 const Dashboard = () => {
+  const { testCases, activities } = useTestContext();
+  
+  // Get the most recent test cases (top 3)
+  const recentTests = testCases.slice(0, 3);
+  
+  // Get the most recent activities (top 5)
+  const recentActivities = activities.slice(0, 5);
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />

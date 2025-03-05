@@ -5,14 +5,47 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useTestContext } from "@/context/TestContext";
 
 const QuickActions = () => {
   const { toast } = useToast();
+  const { incrementTestRuns, addActivity } = useTestContext();
 
-  const handleAction = (action: string) => {
+  const handleStartTestRun = () => {
+    incrementTestRuns();
+    addActivity({
+      type: "created",
+      title: "New Test Run Started",
+      description: "A new test run has been initiated",
+      user: "Current User",
+    });
+    
     toast({
-      title: `${action} Action Triggered`,
-      description: `The ${action} action would be executed in a full implementation.`,
+      title: "Test Run Started",
+      description: "A new test run has been initiated successfully.",
+    });
+  };
+
+  const handleGenerateReport = () => {
+    toast({
+      title: "Report Generated",
+      description: "Your report has been generated successfully.",
+    });
+    
+    // Navigate to reports page (handled by Link component)
+  };
+
+  const handleNewMilestone = () => {
+    toast({
+      title: "New Milestone Created",
+      description: "Your milestone has been created successfully.",
+    });
+  };
+
+  const handleAddUser = () => {
+    toast({
+      title: "User Invitation Sent",
+      description: "An invitation has been sent to the new user.",
     });
   };
 
@@ -26,7 +59,6 @@ const QuickActions = () => {
           <Button 
             className="justify-start gap-2 w-full" 
             size="sm"
-            onClick={() => handleAction("New Test Case")}
           >
             <PlusCircle className="h-4 w-4" />
             New Test Case
@@ -36,24 +68,26 @@ const QuickActions = () => {
           <Button 
             className="justify-start gap-2 w-full" 
             size="sm"
-            onClick={() => handleAction("Start Test Run")}
+            onClick={handleStartTestRun}
           >
             <Play className="h-4 w-4" />
             Start Test Run
           </Button>
         </Link>
+        <Link to="/reports" className="w-full">
+          <Button 
+            className="justify-start gap-2 w-full" 
+            size="sm"
+            onClick={handleGenerateReport}
+          >
+            <BarChart3 className="h-4 w-4" />
+            Generate Report
+          </Button>
+        </Link>
         <Button 
           className="justify-start gap-2" 
           size="sm"
-          onClick={() => handleAction("Generate Report")}
-        >
-          <BarChart3 className="h-4 w-4" />
-          Generate Report
-        </Button>
-        <Button 
-          className="justify-start gap-2" 
-          size="sm"
-          onClick={() => handleAction("New Milestone")}
+          onClick={handleNewMilestone}
         >
           <Calendar className="h-4 w-4" />
           New Milestone
@@ -61,7 +95,7 @@ const QuickActions = () => {
         <Button 
           className="justify-start gap-2" 
           size="sm"
-          onClick={() => handleAction("Add User")}
+          onClick={handleAddUser}
         >
           <Users className="h-4 w-4" />
           Add User

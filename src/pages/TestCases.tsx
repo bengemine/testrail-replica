@@ -1,18 +1,17 @@
 
 import React, { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { v4 as uuidv4 } from "uuid";
 import Navbar from "@/components/layout/Navbar";
 import Sidebar from "@/components/layout/Sidebar";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import TestCaseList from "@/components/tests/TestCaseList";
 import TestCaseForm from "@/components/tests/TestCaseForm";
-import { TestCaseItemProps } from "@/components/tests/TestCaseItem";
+import { useTestContext } from "@/context/TestContext";
 
 const TestCases = () => {
   const { toast } = useToast();
-  const [testCases, setTestCases] = useState<TestCaseItemProps[]>([]);
+  const { testCases, addTestCase } = useTestContext();
   const [formOpen, setFormOpen] = useState(false);
 
   const handleCreateTestCase = () => {
@@ -20,8 +19,8 @@ const TestCases = () => {
   };
 
   const handleFormSubmit = (data: any) => {
-    const newTestCase: TestCaseItemProps = {
-      id: uuidv4(),
+    // Create a new test case using the context
+    addTestCase({
       title: data.title,
       status: "untested",
       priority: data.priority,
@@ -29,9 +28,8 @@ const TestCases = () => {
       createdBy: "Current User",
       lastRun: "Never",
       tags: [],
-    };
+    });
 
-    setTestCases([newTestCase, ...testCases]);
     setFormOpen(false);
     
     toast({

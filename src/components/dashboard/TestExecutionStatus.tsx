@@ -4,38 +4,57 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import DashboardCard from "@/components/dashboard/DashboardCard";
+import { useTestContext } from "@/context/TestContext";
+import { Link } from "react-router-dom";
 
 const TestExecutionStatus = () => {
+  const { testCases } = useTestContext();
+  
+  // Calculate percentages
+  const total = testCases.length || 1; // Avoid division by zero
+  
+  const passed = testCases.filter(test => test.status === "passed").length;
+  const passedPercentage = Math.round((passed / total) * 100);
+  
+  const failed = testCases.filter(test => test.status === "failed").length;
+  const failedPercentage = Math.round((failed / total) * 100);
+  
+  const blocked = testCases.filter(test => test.status === "blocked").length;
+  const blockedPercentage = Math.round((blocked / total) * 100);
+  
+  const notRun = testCases.filter(test => test.status === "untested").length;
+  const notRunPercentage = Math.round((notRun / total) * 100);
+
   return (
     <DashboardCard title="Test Execution Status" description="Last 30 days">
       <div className="space-y-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium">Passed</span>
-            <span>75%</span>
+            <span>{passedPercentage}%</span>
           </div>
-          <Progress value={75} className="h-2 bg-muted" indicatorClassName="bg-emerald-500" />
+          <Progress value={passedPercentage} className="h-2 bg-muted" indicatorClassName="bg-emerald-500" />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium">Failed</span>
-            <span>15%</span>
+            <span>{failedPercentage}%</span>
           </div>
-          <Progress value={15} className="h-2 bg-muted" indicatorClassName="bg-red-500" />
+          <Progress value={failedPercentage} className="h-2 bg-muted" indicatorClassName="bg-red-500" />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium">Blocked</span>
-            <span>5%</span>
+            <span>{blockedPercentage}%</span>
           </div>
-          <Progress value={5} className="h-2 bg-muted" indicatorClassName="bg-amber-500" />
+          <Progress value={blockedPercentage} className="h-2 bg-muted" indicatorClassName="bg-amber-500" />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium">Not Run</span>
-            <span>5%</span>
+            <span>{notRunPercentage}%</span>
           </div>
-          <Progress value={5} className="h-2 bg-muted" indicatorClassName="bg-gray-400" />
+          <Progress value={notRunPercentage} className="h-2 bg-muted" indicatorClassName="bg-gray-400" />
         </div>
       </div>
 
@@ -58,9 +77,11 @@ const TestExecutionStatus = () => {
             <span className="text-xs text-muted-foreground">Not Run</span>
           </div>
         </div>
-        <Button variant="ghost" size="sm" className="gap-1 text-xs">
-          View Full Report <ArrowRight className="h-3 w-3" />
-        </Button>
+        <Link to="/reports">
+          <Button variant="ghost" size="sm" className="gap-1 text-xs">
+            View Full Report <ArrowRight className="h-3 w-3" />
+          </Button>
+        </Link>
       </div>
     </DashboardCard>
   );
