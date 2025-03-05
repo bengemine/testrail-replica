@@ -1,8 +1,8 @@
-
 import React from "react";
 import { CheckCircle2, XCircle, AlertCircle, Clock, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 type TestStatus = "passed" | "failed" | "blocked" | "untested";
 
@@ -15,7 +15,6 @@ export interface TestCaseItemProps {
   createdBy?: string;
   lastRun?: string;
   tags?: string[];
-  onClick?: () => void;
   className?: string;
 }
 
@@ -33,17 +32,18 @@ const getStatusIcon = (status: TestStatus) => {
   }
 };
 
-const getPriorityColor = (priority?: string) => {
+const getPriorityColor = (priority: string) => {
   switch (priority) {
     case "critical":
-      return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
+      return "text-purple-500";
     case "high":
-      return "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300";
+      return "text-red-500";
     case "medium":
-      return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";
+      return "text-amber-500";
     case "low":
+      return "text-green-500";
     default:
-      return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
+      return "";
   }
 };
 
@@ -56,16 +56,28 @@ const TestCaseItem = ({
   createdBy,
   lastRun,
   tags = [],
-  onClick,
   className,
 }: TestCaseItemProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/test-cases/${id}`);
+  };
+
   return (
     <div
       className={cn(
         "flex flex-col rounded-lg border bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md cursor-pointer",
         className
       )}
-      onClick={onClick}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">

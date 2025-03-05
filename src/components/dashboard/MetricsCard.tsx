@@ -1,50 +1,52 @@
-
 import React from "react";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface MetricsCardProps {
   title: string;
-  value: string | number;
-  change?: number;
+  value: string;
+  change: number;
   icon: React.ReactNode;
-  className?: string;
+  onClick?: () => void;
 }
 
-const MetricsCard = ({ title, value, change, icon, className }: MetricsCardProps) => {
-  const isPositive = change && change > 0;
-  const isNegative = change && change < 0;
-
+const MetricsCard = ({
+  title,
+  value,
+  change,
+  icon,
+  onClick
+}: MetricsCardProps) => {
   return (
-    <div className={cn("rounded-lg border bg-card p-6 shadow-sm transition-all duration-200 hover:shadow-md", className)}>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <p className="mt-1 text-3xl font-semibold">{value}</p>
-          
-          {typeof change !== "undefined" && (
-            <div className="mt-2 flex items-center">
-              {isPositive ? (
-                <ArrowUp className="mr-1 h-4 w-4 text-emerald-500" />
-              ) : isNegative ? (
-                <ArrowDown className="mr-1 h-4 w-4 text-red-500" />
-              ) : null}
-              <span
-                className={cn("text-sm font-medium", {
-                  "text-emerald-500": isPositive,
-                  "text-red-500": isNegative,
-                  "text-muted-foreground": !isPositive && !isNegative,
-                })}
-              >
-                {Math.abs(change)}% from last period
-              </span>
+    <Card 
+      onClick={onClick}
+      className={cn(
+        "overflow-hidden transition-all duration-200",
+        onClick && "cursor-pointer hover:shadow-md hover:scale-[1.02]"
+      )}
+    >
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between space-y-0">
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <div className="flex items-center gap-2">
+              <p className="text-2xl font-bold">{value}</p>
+              {change !== 0 && (
+                <span className={cn(
+                  "text-xs font-medium",
+                  change > 0 ? "text-emerald-500" : "text-red-500"
+                )}>
+                  {change > 0 ? "+" : ""}{change}% from last period
+                </span>
+              )}
             </div>
-          )}
+          </div>
+          <div className="p-3 rounded-full bg-primary/10">
+            {icon}
+          </div>
         </div>
-
-        <div className="rounded-full bg-primary/10 p-3">{icon}</div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
